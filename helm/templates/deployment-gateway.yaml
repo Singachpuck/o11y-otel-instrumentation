@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: o11y-gateway-deployment
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Values.gateway.appName }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.gateway.appName }}
+    spec:
+      containers:
+      - name: {{ .Values.gateway.serviceName }}
+        image: {{ .Values.gateway.image }}
+        args:
+          - {{ .Values.gateway.command }}
+        env:
+          - name: USER_MANAGER_HOST
+            value: "{{ .Values.userManager.serviceName }}:{{ .Values.userManager.port }}"
+        resources:
+          limits:
+            memory: "100Mi"
+            cpu: "100m"
+          requests:
+            memory: "10Mi"
+            cpu: "10m"
+        volumeMounts:
+        - mountPath: /home/ansbuild/o11y-examples/config/o11y
+          name: o11y-config-volume
+        ports:
+        - name: http
+          containerPort: {{ .Values.gateway.port }}
+      volumes:
+      - name: o11y-config-volume
+        configMap:
+          name: {{ .Values.gateway.config.configMapName }}
+          items:
+          - key: {{ .Values.gateway.config.fileName }}
+            path: {{ .Values.gateway.config.fileName }}
+      #runtimeClassName: <replace_it_with runtime_classname> #example linux-simulation

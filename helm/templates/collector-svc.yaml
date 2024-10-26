@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.collector.serviceName }}
+spec:
+  selector:
+    app: {{ .Values.collector.appName }}
+  ports:
+  - port: {{ .Values.collector.ports.grpc }}
+    targetPort: grpc
+    name: grpc
+  - port: {{ .Values.collector.ports.http }}
+    targetPort: http
+    name: http

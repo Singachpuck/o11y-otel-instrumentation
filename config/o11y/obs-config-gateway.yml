@@ -1,0 +1,27 @@
+gateway-service:
+  logs:
+    local:
+      active: true
+      format: text
+    file:
+      active: true
+      path: log-output-gateway.log
+      format: json-formatted
+    span:
+      active: true
+  traces:
+    local:
+      active: false
+    export:
+      active: false
+      mode: grpc
+      endpoint: localhost:4317
+  metrics:
+    local:
+      active: false
+      interval: 5000
+    export:
+      active: false
+      mode: grpc
+      endpoint: localhost:4317
+      interval: 5000

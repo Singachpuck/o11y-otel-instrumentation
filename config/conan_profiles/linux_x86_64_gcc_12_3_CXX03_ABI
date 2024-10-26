@@ -1,0 +1,9 @@
+include(linux_x86_64)
+
+[settings]
+compiler=gcc
+compiler.version=12.3
+compiler.libcxx=libstdc++
+[options]
+[build_requires]
+[env]

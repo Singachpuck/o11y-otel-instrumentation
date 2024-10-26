@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: o11y-user-manager-deployment
+spec:
+  replicas: {{ .Values.userManager.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.userManager.appName }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.userManager.appName }}
+    spec:
+      containers:
+      - name: {{ .Values.userManager.serviceName }}
+        image: {{ .Values.userManager.image }}
+        args:
+          - {{ .Values.userManager.command }}
+        resources:
+          limits:
+            memory: "100Mi"
+            cpu: "100m"
+          requests:
+            memory: "10Mi"
+            cpu: "10m"
+        volumeMounts:
+        - mountPath: /home/ansbuild/o11y-examples/config/o11y
+          name: o11y-config-volume
+        ports:
+        - name: grpc
+          containerPort: {{ .Values.userManager.port }}
+      volumes:
+      - name: o11y-config-volume
+        configMap:
+          name: {{ .Values.userManager.config.configMapName }}
+          items:
+          - key: {{ .Values.userManager.config.fileName }}
+            path: {{ .Values.userManager.config.fileName }}
+      #runtimeClassName: <replace_it_with runtime_classname> #example linux-simulation

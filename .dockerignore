@@ -1,0 +1,14 @@
+.idea/
+.vscode/
+
+build/
+config/o11y/
+
+CMakeUserPresets.json
+
+*.log
+*.md
+
+.env
+Makefile
+Dockerfile*

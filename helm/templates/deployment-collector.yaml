@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: o11y-collector-deployment
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Values.collector.appName}}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.collector.appName }}
+    spec:
+      containers:
+      - name: {{ .Values.collector.serviceName}}
+        image: {{ .Values.collector.image }}
+        resources:
+          limits:
+            memory: "100Mi"
+            cpu: "100m"
+          requests:
+            memory: "10Mi"
+            cpu: "10m"
+        volumeMounts:
+        - mountPath: /etc/otelcol/
+          name: collector-config-volume
+          readOnly: true
+        ports:
+        - name: grpc
+          containerPort: {{ .Values.collector.ports.grpc }}
+        - name: http
+          containerPort: {{ .Values.collector.ports.http }}
+      volumes:
+      - name: collector-config-volume
+        configMap:
+          name: {{ .Values.collector.config.configMapName }}
+          items:
+          - key: {{ .Values.collector.config.fileName }}
+            path: config.yaml
+      #runtimeClassName: <replace_it_with runtime_classname> #example linux-simulation

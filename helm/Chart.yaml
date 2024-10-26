@@ -1,0 +1,9 @@
+apiVersion: v2
+name: o11y-cpp
+description: A Helm chart for Observability App Deployment
+
+type: application
+
+version: 0.1.3
+
+appVersion: "1.0.0"

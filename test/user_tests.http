@@ -1,0 +1,28 @@
+GET {{endpoint}}/api/{{apiVersion}}/users
+Authorization: Bearer {{token}}
+
+###
+
+GET {{endpoint}}/api/{{apiVersion}}/users/1
+Authorization: Bearer {{token}}
+
+###
+
+GET {{endpoint}}/api/{{apiVersion}}/users/2
+Authorization: Bearer {{token}}
+
+###
+
+GET {{endpoint}}/api/{{apiVersion}}/users/3
+Authorization: Bearer {{token}}
+
+### 
+
+POST {{endpoint}}/api/{{apiVersion}}/users
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "name": "newuser",
+    "password": "password"
+}

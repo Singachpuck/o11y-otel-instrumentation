@@ -1,0 +1,8 @@
+include(windows_x86_64)
+
+[settings]
+compiler=Visual Studio
+compiler.version=17
+[options]
+[build_requires]
+[env]

@@ -1,0 +1,17 @@
+#pragma once
+
+#define PROJECT_NAME "@PROJECT_NAME@"
+#define PROJECT_VERSION "@PROJECT_VERSION@"
+
+#cmakedefine WITH_USER_MANAGER
+#ifdef WITH_USER_MANAGER
+    #define USER_SERVICE_NAME "@USER_MANAGER_TARGET_NAME@"
+#endif
+
+#cmakedefine WITH_GATEWAY
+#ifdef WITH_GATEWAY
+    #define GATEWAY_SERVICE_NAME "@GATEWAY_TARGET_NAME@"
+#endif
+
+#define NOTSHELL_NAMESPACE_BEGIN namespace dochkas { namespace notshell {
+#define NOTSHELL_NAMESPACE_END }}

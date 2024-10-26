@@ -1,0 +1,27 @@
+user-manager-service:
+  logs:
+    local:
+      active: true
+      format: text # text, json, json-formatted
+    file:
+      active: false
+      path: log-output-user-manager.log
+      format: json
+    span: # Write log as current span events 
+      active: true
+  traces:
+    local: # For debugging purposes
+      active: false
+    export:
+      active: false
+      mode: grpc
+      endpoint: otel-collector:4317
+  metrics:
+    local:
+      active: false
+      interval: 5000
+    export:
+      active: false
+      mode: grpc
+      endpoint: otel-collector:4317 # otel-collector-grpc.o11y-dev:4317
+      interval: 5000

@@ -1,0 +1,7 @@
+[settings]
+os=Linux
+os_build=Linux
+
+[options]
+[build_requires]
+[env]

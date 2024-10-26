@@ -1,0 +1,58 @@
+# Rocky 8.10
+FROM rockylinux/rockylinux@sha256:e8a49c5403b687db05d4d67333fa45808fbe74f36e683cec7abb1f7d0f2338c6 AS base_image
+
+RUN dnf install -y git curl \
+  libicu \
+  libtool \
+  diffutils \
+  glibc-devel bzip2-devel openssl-devel zlib-devel libffi-devel sqlite-devel xz-devel \
+  ca-certificates \
+  patch \
+  make \
+  cmake \
+  gcc \
+  gcc-c++ \
+  perl-IPC-Cmd \
+  perl-Digest-SHA \
+  perl-open \
+  wget && \
+  dnf clean all && \
+  dnf install -y ca-certificates
+
+# Python 3.10
+RUN cd /tmp && wget https://www.python.org/ftp/python/3.10.0/Python-3.10.0.tgz && \ 
+  tar -xvf Python-3.10.0.tgz && \
+  cd Python-3.10.0 && \
+  ./configure --enable-optimizations && \
+  make -j $(nproc) && \
+  make altinstall && \
+  cd ../ && rm -rf Python-3.10.0.tgz Python-3.10.0
+
+ENV CONAN_USER_HOME='/opt'
+
+# Conan 1.65.0
+RUN python3.10 -m venv $CONAN_USER_HOME/venv
+RUN source $CONAN_USER_HOME/venv/bin/activate && \
+  pip3 install conan==1.65.0 && \
+  conan profile new default --detect
+
+RUN useradd --system --create-home --home-dir=/home/dochkas --shell=/bin/bash --uid=1000 dochkas
+RUN chown -R dochkas:dochkas $CONAN_USER_HOME/venv && \
+chown -R dochkas:dochkas $CONAN_USER_HOME/.conan
+USER dochkas
+RUN mkdir /home/dochkas/o11y-examples
+
+FROM base_image AS build_image
+# Install conan first
+WORKDIR /home/dochkas/o11y-examples
+COPY docker.mk .
+COPY conanfile.py .
+RUN source $CONAN_USER_HOME/venv/bin/activate && make -f docker.mk c-install
+
+COPY . .
+RUN source $CONAN_USER_HOME/venv/bin/activate && make -f docker.mk
+
+FROM rockylinux/rockylinux@sha256:e8a49c5403b687db05d4d67333fa45808fbe74f36e683cec7abb1f7d0f2338c6
+WORKDIR /home/dochkas/o11y-examples
+COPY --from=build_image /home/dochkas/o11y-examples/build/gateway-service .
+ENTRYPOINT ["./gateway-service", "-o", "./config/o11y/obs-config-gateway.yml"]

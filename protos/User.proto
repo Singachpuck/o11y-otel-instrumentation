@@ -1,0 +1,32 @@
+
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+
+package foo;
+
+service UserService {
+    
+    rpc ReadUsers(Empty) returns (stream UserResponse) {}
+
+    rpc ReadUser(Id) returns (UserResponse) {}
+
+    rpc CreateUser(UserRequest) returns (UserResponse) {}
+}
+
+message Empty {}
+
+message Id {
+    uint64 id = 1;
+}
+
+message UserRequest {
+    string name = 1;
+    string password = 2;
+}
+
+message UserResponse {
+    uint64 id = 1;
+    string name = 2;
+    google.protobuf.Timestamp created = 3;
+}

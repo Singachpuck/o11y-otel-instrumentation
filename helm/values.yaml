@@ -1,0 +1,29 @@
+gateway:
+  serviceName: gateway
+  appName: o11y-gateway
+  image: 30052004/notshell-gateway:1.0.0
+  command: run-gateway
+  port: 8081
+  config:
+    configMapName: o11y-config
+    fileName: obs-config-gateway.yml
+userManager:
+  serviceName: user-manager
+  appName: o11y-user-manager
+  image: 30052004/notshell-user-manager:1.0.0
+  command: run-user-manager
+  port: 50051
+  config:
+    configMapName: o11y-config
+    fileName: obs-config-user.yml
+  replicas: 2
+collector:
+  serviceName: otel-collector
+  appName: o11y-otel-collector
+  image: otel/opentelemetry-collector:0.108.0
+  ports:
+    grpc: 4317
+    http: 4318
+  config:
+    configMapName: o11y-collector-config
+    fileName: collector-config.yaml

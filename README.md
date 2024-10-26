@@ -1,4 +1,6 @@
-# Agenda:
+# OpenTelemetry instrumentation app 
+
+## Agenda:
 
 1. Project structure
     - User Manager Service (provides gRPC interface)

@@ -45,12 +45,15 @@ RUN mkdir /home/dochkas/o11y-examples
 FROM base_image AS build_image
 # Install conan first
 WORKDIR /home/dochkas/o11y-examples
-COPY docker.mk .
+COPY Makefile .
+COPY ./config/make/linux.mk .
+COPY ./config/make/config.mk .
 COPY conanfile.py .
-RUN source $CONAN_USER_HOME/venv/bin/activate && make -f docker.mk c-install
+ENV CONAN_PROFILES="-pr default"
+RUN source $CONAN_USER_HOME/venv/bin/activate && make c-install
 
 COPY . .
-RUN source $CONAN_USER_HOME/venv/bin/activate && make -f docker.mk
+RUN source $CONAN_USER_HOME/venv/bin/activate && make
 
 FROM rockylinux/rockylinux@sha256:e8a49c5403b687db05d4d67333fa45808fbe74f36e683cec7abb1f7d0f2338c6
 WORKDIR /home/dochkas/o11y-examples

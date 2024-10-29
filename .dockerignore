@@ -3,12 +3,15 @@
 
 build/
 config/o11y/
+helm/
+test/
 
 CMakeUserPresets.json
 
 *.log
 *.md
 
+.gitignore
 .env
-Makefile
+docker-compose.yml
 Dockerfile*

@@ -1,15 +1,19 @@
-CONAN := conan
-CONAN_PROFILES ?= -pr config/conan_profiles/release \
-				-pr config/conan_profiles/windows_x86_64_vs2022
-CMAKE_HOME ?= $(CONAN_USER_HOME)/.conan/data/cmake/3.30.0/_/_/package/ca33edce272a279b24f87dc0d4cf5bbdcffbc187/bin
-CMAKE := $(CMAKE_HOME)/cmake
+CONAN ?= conan
+CONAN_PROFILES ?= -pr:a config/conan_profiles/release \
+				-pr:a config/conan_profiles/conan2/windows_x86_64_msvc194
+# -pr config/conan_profiles/windows_x86_64_vs2022
+# CMAKE_HOME ?= $(CONAN_USER_HOME)/.conan/data/cmake/3.30.0/_/_/package/ca33edce272a279b24f87dc0d4cf5bbdcffbc187/bin
+# CMAKE := $(CMAKE_HOME)/cmake
+CMAKE := cmake
 CMAKE_GENERATOR ?= Visual Studio 17 2022
-PROTOBUF_HOME ?= D:/.conan/5c10e5/1
-PROTOC ?= $(PROTOBUF_HOME)/bin/protoc.exe
-GRPC_HOME ?= D:/.conan/c24159/1
-GRPC_PLUGIN ?= $(GRPC_HOME)/bin/grpc_cpp_plugin.exe
 
-BUILD_CONFIG = --config Release
+# Left to show example of configuration
+# PROTOBUF_HOME ?= D:/.conan/5c10e5/1
+# PROTOC ?= $(PROTOBUF_HOME)/bin/protoc.exe
+# GRPC_HOME ?= D:/.conan/c24159/1
+# GRPC_PLUGIN ?= $(GRPC_HOME)/bin/grpc_cpp_plugin.exe
+
+BUILD_CONFIG ?= --config Release
 
 BUILD_DIR ?= build
 
@@ -22,7 +26,7 @@ define mk_directory
 endef
 
 run-user-manager:
-	./build/Release/user-manager-service -o ./config/o11y/obs-config-user.yml
+	./build/Release/user-manager-service -o ./config/o11y/obs-config-user.yml --db-password=password --db-name=o11y --db-host=azewu22jdutel01 --db-port=5432
 
 run-gateway:
 	./build/Release/gateway-service -o ./config/o11y/obs-config-gateway.yml

@@ -15,6 +15,10 @@ namespace common::config {
         return holder;
     }
 
+    void ConfigHolder::withPostgresConfig() {
+        this->postgresConfig = std::make_unique<PostgresConfig>();
+    }
+
     /*
     user-manager:
         logs:
@@ -53,6 +57,10 @@ namespace common::config {
         return this->obsConfig;
     }
 
+    const PostgresConfig& ConfigHolder::getPostgresConfig() const {
+        return *this->postgresConfig;
+    }
+
     const std::string& ConfigHolder::getEnvOrDefault(const std::string& env, const std::string& def) const {
         if (this->environment.count(env)) {
             return this->environment.at(env);
@@ -65,7 +73,12 @@ namespace common::config {
         cxxopts::Options options(appName, description);
 
         options.add_options()
-            ("o,observability-config", "Observability Configuration File", cxxopts::value<std::string>());
+            ("o,observability-config", "Observability Configuration File", cxxopts::value<std::string>())
+            ("db-user", "Database User", cxxopts::value<std::string>())
+            ("db-password", "Database Password", cxxopts::value<std::string>())
+            ("db-name", "Database Name", cxxopts::value<std::string>())
+            ("db-host", "Database Host", cxxopts::value<std::string>())
+            ("db-port", "Database Port", cxxopts::value<std::uint16_t>());
 
         return options.parse(argc, argv);
     }
@@ -93,6 +106,37 @@ namespace common::config {
             if (e != NULL) {
                 holder.environment[env] = e;
             }
+        }
+    }
+
+    /**
+     * --db-user
+     * --db-password
+     * --db-name
+     * --db-host
+     * --db-port
+     */
+    void parse_pgsql_config(const cxxopts::ParseResult& cl_arguments) {
+        holder.withPostgresConfig();
+
+        if (auto db_user = cl_arguments["db-user"]; cl_arguments.count("db_user")) {
+            holder.postgresConfig->user = db_user.as<std::string>();
+        }
+
+        if (auto db_password = cl_arguments["db-password"]; cl_arguments.count("db-password")) {
+            holder.postgresConfig->password = db_password.as<std::string>();
+        }
+
+        if (auto db_name = cl_arguments["db-name"]; cl_arguments.count("db-name")) {
+            holder.postgresConfig->db = db_name.as<std::string>();
+        }
+
+        if (auto db_host = cl_arguments["db-host"]; cl_arguments.count("db-host")) {
+            holder.postgresConfig->host = db_host.as<std::string>();
+        }
+
+        if (auto db_port = cl_arguments["db-port"]; cl_arguments.count("db-port")) {
+            holder.postgresConfig->port = db_port.as<std::uint16_t>();
         }
     }
 }

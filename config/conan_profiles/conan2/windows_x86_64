@@ -1,0 +1,9 @@
+include(windows)
+
+[settings]
+arch=x86_64
+[options]
+[tool_requires]
+[buildenv]
+[runenv]
+

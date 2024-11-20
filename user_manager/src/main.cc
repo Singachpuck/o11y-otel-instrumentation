@@ -11,8 +11,14 @@
 #include "notshell/common/observability/tracer_commons.h"
 #include "notshell/common/observability/logging_commons.h"
 #include "notshell/common/observability/metrics_commons.h"
+#include "notshell/common/services.h"
+#include "notshell/user_manager/dao/InMemoryUserDao.h"
+#include "notshell/user_manager/dao/OdbUserDao.h"
 #include "notshell/user_manager/service/UserService.h"
 
+#include <odb/pgsql/database.hxx>
+
+namespace commons = dochkas::notshell::common;
 namespace obs = dochkas::notshell::common::observability;
 namespace config = dochkas::notshell::common::config;
 
@@ -24,11 +30,14 @@ const char* config::CURRENT_SERVICE_NAME = USER_SERVICE_NAME;
 
 int main(int argc, char* argv[])
 {
-    auto cl_result = config::parse_command_line_args(argc, argv,
-        fmt::format("{}/{}", PROJECT_NAME, USER_SERVICE_NAME),
-        "User manager service.");
+    {
+        auto cl_result = config::parse_command_line_args(argc, argv,
+            fmt::format("{}/{}", PROJECT_NAME, USER_SERVICE_NAME),
+            "User manager service.");
 
-    config::parse_observability_config(cl_result);
+        config::parse_observability_config(cl_result);
+        config::parse_pgsql_config(cl_result);
+    }
 
     obs::initTracer(config::CURRENT_SERVICE_NAME);
     obs::initLogging();
@@ -37,10 +46,14 @@ int main(int argc, char* argv[])
     auto& logger = obs::default_logger::get();
     BOOST_LOG_SEV(logger, logging::trivial::info) << "User Manager works!";
 
-    std::string server_address("0.0.0.0:50051");
+    // std::shared_ptr<odb::database> db = commons::initDatabase();
+    // std::auto_ptr<odb::database> db (new odb::pgsql::database (argc, argv));
+    commons::initDatabase();
     auto userDao = std::make_shared<InMemoryUserDao>();
+    // auto userDao = std::make_shared<OdbUserDao>(db);
     UserServiceImpl service(userDao);
 
+    std::string server_address("0.0.0.0:50051");
     grpc::ServerBuilder builder;
     builder.AddListeningPort(server_address, grpc::InsecureServerCredentials());
     builder.RegisterService(&service);

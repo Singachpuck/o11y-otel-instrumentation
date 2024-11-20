@@ -2,6 +2,8 @@
 #include "notshell/common/mappers/object_mappers.h"
 
 #include <sstream>
+#include <google/protobuf/timestamp.pb.h>
+#include <boost/date_time/posix_time/posix_time_types.hpp>
 #include <boost/date_time/posix_time/posix_time_io.hpp>
 
 #include "schema/User.pb.h"
@@ -20,6 +22,22 @@ void nlohmann::adl_serializer<boost::posix_time::ptime>::from_json(const nlohman
     // Nothing to do yet
 }
 // ~JSON 
+
+template<>
+void dochkas::notshell::common::convert<boost::posix_time::ptime, long long>(const boost::posix_time::ptime& from, long long& to) {
+    boost::posix_time::ptime epoch(boost::gregorian::date(1970, 1, 1));
+    boost::posix_time::time_duration diff = from - epoch;
+    
+    to = diff.total_milliseconds();
+}
+
+template<>
+void dochkas::notshell::common::convert<long long, boost::posix_time::ptime>(const long long& from, boost::posix_time::ptime& to) {
+    const boost::posix_time::ptime epoch(boost::gregorian::date(1970, 1, 1));
+    const boost::posix_time::milliseconds ms(from);
+    
+    to = epoch + ms;
+}
 
 template<>
 void dochkas::notshell::common::convert<boost::posix_time::ptime, google::protobuf::Timestamp>(const boost::posix_time::ptime& from, google::protobuf::Timestamp& to) {

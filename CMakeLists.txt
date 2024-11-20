@@ -3,6 +3,9 @@ project(notshell VERSION 1.0.0 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+
+add_compile_definitions("_HAS_AUTO_PTR_ETC=1")
 
 option(WITH_USER_MANAGER "Build user manager service?" ON)
 option(WITH_GATEWAY "Build gateway service?" ON)
@@ -18,6 +21,7 @@ find_package(nlohmann_json REQUIRED)
 find_package(fmt REQUIRED)
 find_package(Boost REQUIRED COMPONENTS log)
 find_package(opentelemetry-cpp REQUIRED)
+find_package(odb REQUIRED)
 
 # Generates protobuf files
 set(PROTO_COLLECTION_NAME "proto-objects")
@@ -32,10 +36,10 @@ if (WITH_USER_MANAGER)
     add_subdirectory(user_manager)
 endif ()
 
-if (WITH_GATEWAY)
-    set(GATEWAY_TARGET_NAME "gateway-service")
+# if (WITH_GATEWAY)
+#     set(GATEWAY_TARGET_NAME "gateway-service")
 
-    add_subdirectory(gateway)
-endif ()
+#     add_subdirectory(gateway)
+# endif ()
 
 add_subdirectory(config)

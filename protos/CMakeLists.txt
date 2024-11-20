@@ -1,4 +1,3 @@
-set(GENERATED_PROTO_DIR ${CMAKE_BINARY_DIR}/proto_output/schema)
 set(GRPC_PROTO_EXTENSIONS ".grpc.pb.h" ".grpc.pb.cc")
 
 add_library(${PROTO_COLLECTION_NAME} OBJECT "${CMAKE_CURRENT_LIST_DIR}/User.proto")
@@ -13,7 +12,7 @@ target_include_directories(${PROTO_COLLECTION_NAME} PUBLIC "$<BUILD_INTERFACE:${
 #file(MAKE_DIRECTORY ${PROTO_BINARY_DIR})
 
 add_custom_target(GENERATE_PROTO_DIR ALL
-        COMMAND ${CMAKE_COMMAND} -E make_directory ${GENERATED_PROTO_DIR})
+        COMMAND ${CMAKE_COMMAND} -E make_directory ${PROTO_BINARY_DIR})
 
 add_dependencies(${PROTO_COLLECTION_NAME} GENERATE_PROTO_DIR)
 

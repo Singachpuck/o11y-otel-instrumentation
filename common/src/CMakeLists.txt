@@ -12,7 +12,8 @@ target_link_libraries(${COMMONS_LIBRARY_NAME}
     opentelemetry-cpp::opentelemetry-cpp
     cxxopts::cxxopts
     yaml-cpp::yaml-cpp
-    restbed::restbed)
+    restbed::restbed
+    odb::odb)
 
 if(WIN32)
     target_link_libraries(${COMMONS_LIBRARY_NAME} ${opentelemetry-cpp_LIB_DIRS_RELEASE}/opentelemetry_proto_grpc.lib)

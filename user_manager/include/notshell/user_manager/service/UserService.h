@@ -9,7 +9,7 @@
 #include "notshell/common/services.h"
 #include "notshell/common/observability/logging_commons.h"
 #include "notshell/user_manager/model/User.h"
-#include "notshell/user_manager/dao/InMemoryUserDao.h"
+#include "notshell/user_manager/dao/IUserDao.h"
 
 namespace logging = boost::log;
 namespace src = boost::log::sources;
@@ -19,7 +19,6 @@ namespace commons = dochkas::notshell::common;
 
 NOTSHELL_NAMESPACE_BEGIN
 
-// TODO: Add DAO layer
 namespace user_manager {
     class UserServiceImpl : public foo::UserService::Service {
     private:

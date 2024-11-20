@@ -1,5 +1,4 @@
 from conan import ConanFile
-from conan.tools.cmake import cmake_layout
 
 
 class ContextPropagationApp(ConanFile):
@@ -77,6 +76,7 @@ class ContextPropagationApp(ConanFile):
         self.requires(self._restbed_package)
         self.requires(self._cxxopts_package)
         self.requires(self._yaml_package)
+        self.requires("odb/2.4.0")
 
     def build_requirements(self):
         self.build_requires(self._cmake_package)

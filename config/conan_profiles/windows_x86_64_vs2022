@@ -6,3 +6,5 @@ compiler.version=17
 [options]
 [build_requires]
 [env]
+MAKE=
+MAKEFLAGS=

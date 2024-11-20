@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include <odb/database.hxx>
 
 #include "project_config.h"
 #include "notshell/common/observability/metrics_commons.h"
@@ -16,5 +17,8 @@ struct ServiceStatistics {
 };
 
 std::uint64_t getNextId(const std::string& key);
+
+// std::unique_ptr<odb::database> initDatabase();
+void initDatabase();
 }
 NOTSHELL_NAMESPACE_END

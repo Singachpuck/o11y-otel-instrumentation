@@ -1,0 +1,13 @@
+include(windows_x86_64)
+
+[settings]
+compiler=msvc
+compiler.version=194
+compiler.runtime=dynamic
+[options]
+[tool_requires]
+[buildenv]
+MAKE=
+MAKEFLAGS=
+[runenv]
+

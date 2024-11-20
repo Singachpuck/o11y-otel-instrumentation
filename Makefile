@@ -3,7 +3,7 @@ all: clean c-install generate b
 -include config.mk
 
 c-install:
-	$(CONAN) install $(CONAN_PROFILES) -if=$(BUILD_DIR) . --build=missing
+	$(CONAN) install $(CONAN_PROFILES) --output-folder=$(BUILD_DIR) . --build=missing
 
 generate:
 	$(CMAKE) . -G "$(CMAKE_GENERATOR)" -B $(BUILD_DIR) -DCMAKE_TOOLCHAIN_FILE=$(BUILD_DIR)/conan_toolchain.cmake \

@@ -1,0 +1,7 @@
+[settings]
+os=Windows
+
+[options]
+[tool_requires]
+[buildenv]
+[runenv]

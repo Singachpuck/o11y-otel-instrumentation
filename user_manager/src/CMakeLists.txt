@@ -2,7 +2,8 @@ set(SOURCES
     "main.cc"
     "mappers.cc"
     "UserService.cc"
-    "UserDao.cc")
+    "OdbUserDao.cc"
+    "InMemoryUserDao.cc")
 
 target_sources(${USER_MANAGER_TARGET_NAME} PRIVATE ${SOURCES})
 

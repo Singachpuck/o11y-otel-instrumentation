@@ -3,6 +3,7 @@
 #include <cstdint>
 #include <string>
 #include <vector>
+#include <memory>
 
 #include <boost/date_time/posix_time/posix_time_types.hpp>
 

@@ -25,8 +25,10 @@ define mk_directory
   powershell -Command "New-Item -ItemType Directory -Path $(1) -Force"
 endef
 
-run-user-manager:
-	./build/Release/user-manager-service -o ./config/o11y/obs-config-user.yml --db-password=password --db-name=o11y --db-host=azewu22jdutel01 --db-port=5432
+run-user-manager: $(BUILD_DIR)/conanrun.ps1 $(BUILD_DIR)/Release/user-manager-service.exe
+	powershell -noexit -Command \
+	"& \"$(word 1,$^)\""; \
+	$(word 2,$^) -o ./config/o11y/obs-config-user.yml --db-password=password --db-name=o11y --db-host=azewu22jdutel01 --db-port=5432"
 
-run-gateway:
-	./build/Release/gateway-service -o ./config/o11y/obs-config-gateway.yml
+run-gateway: $(BUILD_DIR)/conanrun.ps1 $(BUILD_DIR)/Release/gateway-service.exe
+	$(BUILD_DIR)/Release/gateway-service -o ./config/o11y/obs-config-gateway.yml

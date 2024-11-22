@@ -1,7 +1,9 @@
 include(windows_x86_64)
+include(otel_fix)
 
 [settings]
 compiler=msvc
+# compiler.cppstd=14
 compiler.version=194
 compiler.runtime=dynamic
 [options]
@@ -10,4 +12,5 @@ compiler.runtime=dynamic
 MAKE=
 MAKEFLAGS=
 [runenv]
-
+[conf]
+tools.env.virtualenv:powershell=True

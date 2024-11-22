@@ -1,0 +1,2 @@
+[conf]
+opentelemetry-cpp/*:tools.build:defines=["NOMINMAX"]

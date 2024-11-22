@@ -3,7 +3,7 @@ from conan import ConanFile
 
 class ContextPropagationApp(ConanFile):
     settings = "os", "compiler", "build_type", "arch"
-    generators = "CMakeToolchain", "CMakeDeps"
+    generators = "CMakeToolchain", "CMakeDeps", "VirtualRunEnv"
 
     _otel_package_name = "opentelemetry-cpp"
     _otel_version = "1.14.2"
@@ -53,20 +53,15 @@ class ContextPropagationApp(ConanFile):
     @property
     def _cmake_package(self): return "{}/{}".format(self._cmake_package_name, self._cmake_version)
 
-    _grpc_package_name = "grpc"
-    _grpc_version = "1.46.7.9"
-    _grpc_plugins_package_name = "grpc_plugins"
+    _odb_package_name = "odb"
+    _odb_version = "2.4.0"
 
     @property
-    def _grpc_plugins_package(self):  return "{}/{}".format(self._grpc_plugins_package_name, self._grpc_version)
+    def _odb_package(self): return "{}/{}".format(self._odb_package_name, self._odb_version)
 
-    _protobuf_package_name = "protobuf"
-    _protobuf_version = "3.19.6.1"
-    _protoc_package_name = "protoc"
-
-    @property
-    def _protoc_package(self):  return "{}/{}".format(self._protoc_package_name, self._protobuf_version)
-
+    def config_options(self):
+        self.options[self._otel_package_name].with_otlp_grpc = True
+        self.options[self._otel_package_name].with_otlp_http = False
 
     def requirements(self):
         self.requires(self._otel_package)
@@ -76,7 +71,7 @@ class ContextPropagationApp(ConanFile):
         self.requires(self._restbed_package)
         self.requires(self._cxxopts_package)
         self.requires(self._yaml_package)
-        self.requires("odb/2.4.0")
+        self.requires(self._odb_package)
 
     def build_requirements(self):
         self.build_requires(self._cmake_package)

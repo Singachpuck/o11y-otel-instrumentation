@@ -46,11 +46,9 @@ int main(int argc, char* argv[])
     auto& logger = obs::default_logger::get();
     BOOST_LOG_SEV(logger, logging::trivial::info) << "User Manager works!";
 
-    // std::shared_ptr<odb::database> db = commons::initDatabase();
-    // std::auto_ptr<odb::database> db (new odb::pgsql::database (argc, argv));
-    commons::initDatabase();
-    auto userDao = std::make_shared<InMemoryUserDao>();
-    // auto userDao = std::make_shared<OdbUserDao>(db);
+    std::shared_ptr<odb::database> db = commons::initDatabase();
+//    auto userDao = std::make_shared<InMemoryUserDao>();
+    auto userDao = std::make_shared<OdbUserDao>(db);
     UserServiceImpl service(userDao);
 
     std::string server_address("0.0.0.0:50051");

@@ -2,6 +2,8 @@
 
 #include <fmt/core.h>
 
+#include <utility>
+
 #include "notshell/common/services.h"
 #include "notshell/common/mappers/object_mappers.h"
 #include "notshell/common/observability/metrics_commons.h"
@@ -14,30 +16,8 @@ namespace commons = dochkas::notshell::common;
 
 using namespace dochkas::notshell::user_manager;
 
-UserServiceImpl::UserServiceImpl(std::shared_ptr<IUserDao> userDao) : userDao(userDao) {
+UserServiceImpl::UserServiceImpl(std::shared_ptr<IUserDao> userDao) : userDao(std::move(userDao)) {
     this->logger = obs::default_logger::get();
-
-    {
-        User u1;
-        u1.name = "user1";
-        u1.password = "password1";
-        u1.created = boost::posix_time::second_clock::universal_time();
-
-        User u2;
-        u2.name = "user2";
-        u2.password = "password2";
-        u2.created = boost::posix_time::second_clock::universal_time();
-
-
-        User u3;
-        u3.name = "user3";
-        u3.password = "password3";
-        u3.created = boost::posix_time::second_clock::universal_time();
-
-        userDao->createUser(std::make_unique<User>(u1));
-        userDao->createUser(std::make_unique<User>(u2));
-        userDao->createUser(std::make_unique<User>(u3));
-    }
 
     this->stat.requestCounter = obs::getMeter()->CreateUInt64Counter(
         // name

@@ -13,9 +13,10 @@ namespace user_manager {
     private:
         std::unordered_map<std::uint64_t, User> users{};
     public:
-        std::shared_ptr<Users> getUsers();
-        std::shared_ptr<User> getUserById(std::uint64_t);
-        std::shared_ptr<User> createUser(std::unique_ptr<User>);
+        InMemoryUserDao();
+        std::shared_ptr<Users> getUsers() override;
+        std::shared_ptr<User> getUserById(std::uint64_t) override;
+        std::shared_ptr<User> createUser(std::unique_ptr<User>) override;
     };
 }
 

@@ -18,7 +18,6 @@ struct ServiceStatistics {
 
 std::uint64_t getNextId(const std::string& key);
 
-// std::unique_ptr<odb::database> initDatabase();
-void initDatabase();
+std::unique_ptr<odb::database> initDatabase();
 }
 NOTSHELL_NAMESPACE_END

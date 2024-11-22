@@ -36,10 +36,10 @@ if (WITH_USER_MANAGER)
     add_subdirectory(user_manager)
 endif ()
 
-# if (WITH_GATEWAY)
-#     set(GATEWAY_TARGET_NAME "gateway-service")
+ if (WITH_GATEWAY)
+     set(GATEWAY_TARGET_NAME "gateway-service")
 
-#     add_subdirectory(gateway)
-# endif ()
+     add_subdirectory(gateway)
+ endif ()
 
 add_subdirectory(config)

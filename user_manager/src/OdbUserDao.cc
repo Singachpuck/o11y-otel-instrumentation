@@ -1,6 +1,7 @@
 #include "notshell/user_manager/dao/OdbUserDao.h"
 
 #include <odb/transaction.hxx>
+#include <utility>
 #include "User-odb.hxx"
 
 #include "notshell/common/services.h"
@@ -12,7 +13,7 @@ NOTSHELL_NAMESPACE_BEGIN
 
 namespace user_manager {
 
-    OdbUserDao::OdbUserDao(std::shared_ptr<odb::database> db) : db(db) {}
+    OdbUserDao::OdbUserDao(std::shared_ptr<odb::database> db) : db(std::move(db)) {}
 
     std::shared_ptr<Users> OdbUserDao::getUsers() {
         auto userCollection = std::make_shared<Users>();

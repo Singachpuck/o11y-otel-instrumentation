@@ -4,7 +4,7 @@ gateway-service:
       active: true
       format: text
     file:
-      active: true
+      active: false
       path: log-output-gateway.log
       format: json-formatted
     span:

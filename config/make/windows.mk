@@ -27,8 +27,8 @@ endef
 
 run-user-manager: $(BUILD_DIR)/conanrun.ps1 $(BUILD_DIR)/Release/user-manager-service.exe
 	powershell -noexit -Command \
-	"& \"$(word 1,$^)\""; \
-	$(word 2,$^) -o ./config/o11y/obs-config-user.yml --db-password=password --db-name=o11y --db-host=azewu22jdutel01 --db-port=5432"
+	"& \"$(word 1,$^)\"; \
+	$(word 2,$^) -o ./config/o11y/obs-config-user.yml --db-password=postgres --db-name=o11y --db-host=localhost --db-port=5433"
 
 run-gateway: $(BUILD_DIR)/conanrun.ps1 $(BUILD_DIR)/Release/gateway-service.exe
 	$(BUILD_DIR)/Release/gateway-service -o ./config/o11y/obs-config-gateway.yml

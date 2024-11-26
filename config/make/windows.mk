@@ -17,6 +17,12 @@ BUILD_CONFIG ?= --config Release
 
 BUILD_DIR ?= build
 
+PG_USER ?= postgres
+PG_PASSWORD ?= postgres
+PG_DB ?= postgres
+PG_HOST ?= localhost
+PG_PORT ?= 5432
+
 define rm_directory
   powershell -Command "Remove-Item -Path $(1) -Recurse -Force"
 endef
@@ -28,7 +34,7 @@ endef
 run-user-manager: $(BUILD_DIR)/conanrun.ps1 $(BUILD_DIR)/Release/user-manager-service.exe
 	powershell -noexit -Command \
 	"& \"$(word 1,$^)\"; \
-	$(word 2,$^) -o ./config/o11y/obs-config-user.yml --db-password=postgres --db-name=o11y --db-host=localhost --db-port=5433"
+	$(word 2,$^) -o ./config/o11y/obs-config-user.yml --db-user=$(PG_USER) --db-password=$(PG_PASSWORD) --db-name=$(PG_DB) --db-host=$(PG_HOST) --db-port=$(PG_PORT)"
 
 run-gateway: $(BUILD_DIR)/conanrun.ps1 $(BUILD_DIR)/Release/gateway-service.exe
 	$(BUILD_DIR)/Release/gateway-service -o ./config/o11y/obs-config-gateway.yml

@@ -62,6 +62,8 @@ class ContextPropagationApp(ConanFile):
     def config_options(self):
         self.options[self._otel_package_name].with_otlp_grpc = True
         self.options[self._otel_package_name].with_otlp_http = False
+        self.options[self._odb_package_name].with_compiler = True
+        self.options[self._odb_package_name].with_pgsql = True
 
     def requirements(self):
         self.requires(self._otel_package)
